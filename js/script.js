@@ -20,8 +20,8 @@ form.addEventListener('submit', (e) => {
     let department = document.querySelector('#department').value;
 
     // INSERT A NEW ROW AT THE END OF THE EMPLOYEES TABLE
-    let newRow = document.createElement('tr');
-    employees.appendChild(newRow);
+    let newRow = employees.insertRow()
+    employees.appendChild(newRow)
 
     // INSERT A CELL FOR EACH ITEM WITHIN THE NEW ROW
     let cellId = newRow.insertCell(0)
@@ -38,10 +38,11 @@ form.addEventListener('submit', (e) => {
     cellDepartment.appendChild(document.createTextNode(department))
 
     // CREATE THE DELETE BUTTON
+    let deleteCell = newRow.insertCell(5)
     let deleteBtn = document.createElement('button')
-    deleteBtn.className = 'btn btn-danger btn-sm float-right delete'
-    deleteBtn.appendChild(document.createTextNode('X'))
-    newRow.appendChild(deleteBtn)
+    deleteBtn.className = 'btn btn-danger btn-sm active delete'
+    deleteBtn.textContent = 'X'
+    deleteCell.appendChild(deleteBtn)
 
     // INCREMENENT THE NUMBER OF EMPLOYEES IN THE TABLE
     count++
@@ -56,11 +57,12 @@ form.addEventListener('submit', (e) => {
 
 // DELETE EMPLOYEE
 employees.addEventListener('click', (e) => {
-    if(e.target.classList.contains('delete')) {
-        if(confirm('Are you sure you want to delete this employee?')) {
-            employees.removeChild(e.target.parentElement)
+    if (e.target.tagName === 'BUTTON') {
+        if (confirm('Are you sure you want to delete this employee?')) {
+            let row = e.target.parentElement.parentElement
+            employees.deleteRow(row.rowIndex)
             count--
-            empCount.textContent = count;
+            empCount.textContent = count
         }
     }
 })
